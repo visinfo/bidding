@@ -32,4 +32,10 @@ public class BidAuctionTest {
         Assertions.assertNotNull(bidAuction.getAuction(1L).orElseGet(()->null));
 
     }
+
+    @Test
+    public void givenAuctionModel_whenCreateAuction_thenReturnAuctionId() {
+        Mockito.when(bidAuction.createAuction("1",1.0)).thenReturn(1L);
+        Assertions.assertNotEquals(0, bidAuction.createAuction("1",1.0));
+    }
 }
