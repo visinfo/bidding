@@ -9,4 +9,7 @@ public interface BidAuction<A> {
     Long createAuction(String productId, BigDecimal minimumBid);
     void placeBid(Long auctionId, String bidderId, BigDecimal amount);
 
+    Optional<A> endAuction(Long auctionId);
+
+    Optional<String> getWinner(Long auctionId);
 }

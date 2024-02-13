@@ -3,6 +3,7 @@ package com.db.auction.service;
 import com.db.auction.domain.BidAuctionRepository;
 import com.db.auction.domain.exception.InvalidBid;
 import com.db.auction.domain.model.Auction;
+import com.db.auction.domain.model.Bid;
 import com.db.auction.domain.service.BidAuction;
 import com.db.auction.domain.service.FirstPriceSealedBidAuction;
 import org.junit.jupiter.api.Assertions;
@@ -15,6 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -65,5 +68,29 @@ public class BidAuctionTest {
         auction.setProductId("1");
         Mockito.when(bidAuctionRepository.getAuction(1L)).thenReturn(Optional.of(auction));
         Assertions.assertThrows(InvalidBid.class, ()->bidAuction.placeBid(1L,"1",BigDecimal.valueOf(0.5)));
+    }
+    @Test
+    public void givenAuctionId_whenEndAuction_thenReturnAuction() {
+        Auction auction = new Auction();
+        auction.setMinimumBid(BigDecimal.valueOf(1.0));
+        auction.setProductId("1");
+        List<Bid> bids = List.of(new Bid("1",BigDecimal.valueOf(1.0), LocalDateTime.now(), 1L));
+        auction.setBids(bids);
+        Mockito.when(bidAuctionRepository.saveAuction(any(Auction.class))).thenReturn(1L);
+        Mockito.when(bidAuctionRepository.getAuction(1L)).thenReturn(Optional.of(auction));
+        Assertions.assertNotNull(bidAuction.endAuction(1L).orElseGet(()->null));
+    }
+    @Test
+    public void givenAuctionId_whenGetWinner_thenReturnWinner() {
+        Auction auction = new Auction();
+        auction.setMinimumBid(BigDecimal.valueOf(1.0));
+        auction.setProductId("1");
+        List<Bid> bids = List.of(new Bid("101111",BigDecimal.valueOf(1.0), LocalDateTime.now(), 1L));
+        auction.setBids(bids);
+        Mockito.when(bidAuctionRepository.saveAuction(any(Auction.class))).thenReturn(1L);
+        Mockito.when(bidAuctionRepository.getAuction(1L)).thenReturn(Optional.of(auction));
+        Assertions.assertNotNull(bidAuction.endAuction(1L).orElseGet(()->null));
+        Assertions.assertEquals(bidAuction.getWinner(1L).orElseGet(()->null), "101111");
+
     }
 }
