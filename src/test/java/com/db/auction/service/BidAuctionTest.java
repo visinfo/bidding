@@ -11,10 +11,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
 
+
+import java.math.BigDecimal;
 import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class BidAuctionTest {
@@ -28,14 +32,28 @@ public class BidAuctionTest {
     }
     @Test
     public void givenAuctionId_whenGetAuction_thenReturnAuction() {
-        Mockito.when(bidAuctionRepository.getAuction(1L)).thenReturn(Optional.of(new Auction("1","1",1.0)));
+        Auction auction = new Auction();
+        auction.setMinimumBid(BigDecimal.valueOf(1.0));
+        auction.setProductId("1");
+        Mockito.when(bidAuctionRepository.getAuction(1L)).thenReturn(Optional.of(auction));
         Assertions.assertNotNull(bidAuction.getAuction(1L).orElseGet(()->null));
 
     }
 
     @Test
     public void givenAuctionModel_whenCreateAuction_thenReturnAuctionId() {
-        Mockito.when(bidAuction.createAuction("1",1.0)).thenReturn(1L);
-        Assertions.assertNotEquals(0, bidAuction.createAuction("1",1.0));
+        Mockito.when(bidAuctionRepository.saveAuction(any(Auction.class))).thenReturn(1L);
+        Assertions.assertNotEquals(0, bidAuction.createAuction("1",BigDecimal.valueOf(1.0)));
+    }
+
+    @Test
+    public void givenAuctionIdBidderIdAmount_whenPlaceBid_thenReturnValidAuctionId() {
+        Auction auction = new Auction();
+        auction.setMinimumBid(BigDecimal.valueOf(1.0));
+        auction.setProductId("1");
+        Mockito.when(bidAuctionRepository.saveAuction(any(Auction.class))).thenReturn(1L);
+        Mockito.when(bidAuctionRepository.getAuction(1L)).thenReturn(Optional.of(auction));
+        bidAuction.placeBid(1L,"1",BigDecimal.valueOf(1.0));
+        verify(bidAuctionRepository, times(1)).saveAuction(any(Auction.class));
     }
 }
