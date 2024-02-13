@@ -2,6 +2,7 @@ package com.db.auction.service;
 
 import com.db.auction.domain.BidAuction;
 import com.db.auction.domain.FirstPriceSealedBidAuction;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,8 @@ public class BidAuctionTest {
     }
     @Test
     public void givenAuctionId_whenGetAuction_thenReturnAuction() {
-        bidAuction.getAuction(1L);
+
+        Assertions.assertNotNull(bidAuction.getAuction(1L).orElseGet(()->null));
+
     }
 }
