@@ -14,10 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Auction {
-    private String id;
+    private Long id;
+    private String title;
     private String productId;
     private BigDecimal minimumBid;
     private List<Bid> bids = new ArrayList<>();
     private String winnerId;
-    private AuctionStatus status = AuctionStatus.STARTED;
+    private AuctionStatus status;
 }
