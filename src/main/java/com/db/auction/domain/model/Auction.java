@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,5 +16,8 @@ import java.util.List;
 public class Auction {
     private String id;
     private String productId;
-    private double minimumBid;
+    private BigDecimal minimumBid;
+    private List<Bid> bids = new ArrayList<>();
+    private String winnerId;
+    private AuctionStatus status = AuctionStatus.STARTED;
 }
