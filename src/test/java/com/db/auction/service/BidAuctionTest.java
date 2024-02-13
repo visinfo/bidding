@@ -1,6 +1,7 @@
 package com.db.auction.service;
 
 import com.db.auction.domain.BidAuctionRepository;
+import com.db.auction.domain.exception.InvalidBid;
 import com.db.auction.domain.model.Auction;
 import com.db.auction.domain.service.BidAuction;
 import com.db.auction.domain.service.FirstPriceSealedBidAuction;
@@ -55,5 +56,14 @@ public class BidAuctionTest {
         Mockito.when(bidAuctionRepository.getAuction(1L)).thenReturn(Optional.of(auction));
         bidAuction.placeBid(1L,"1",BigDecimal.valueOf(1.0));
         verify(bidAuctionRepository, times(1)).saveAuction(any(Auction.class));
+    }
+
+    @Test
+    public void givenAuctionIdBidderIdAmount_whenPlaceBid_thenReturnInvalidBid() {
+        Auction auction = new Auction();
+        auction.setMinimumBid(BigDecimal.valueOf(100));
+        auction.setProductId("1");
+        Mockito.when(bidAuctionRepository.getAuction(1L)).thenReturn(Optional.of(auction));
+        Assertions.assertThrows(InvalidBid.class, ()->bidAuction.placeBid(1L,"1",BigDecimal.valueOf(0.5)));
     }
 }
