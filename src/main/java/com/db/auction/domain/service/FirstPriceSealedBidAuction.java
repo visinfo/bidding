@@ -36,7 +36,7 @@ public class FirstPriceSealedBidAuction implements BidAuction<Auction>{
             throw new InvalidAuction("Auction not found");
         }
 
-        if (auction.get().getMinimumBid().compareTo(amount) < 0){
+        if (auction.get().getMinimumBid().compareTo(amount) > 0){
             throw new InvalidBid("Invalid Bid amount");
         }
 
