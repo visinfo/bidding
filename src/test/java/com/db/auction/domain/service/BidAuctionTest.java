@@ -1,4 +1,4 @@
-package com.db.auction.service;
+package com.db.auction.domain.service;
 
 import com.db.auction.domain.BidAuctionRepository;
 import com.db.auction.domain.exception.InvalidBid;

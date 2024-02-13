@@ -29,6 +29,7 @@ public class FirstPriceSealedBidAuction implements BidAuction<Auction>{
         Auction auction = new Auction();
         auction.setMinimumBid(minimumBid);
         auction.setProductId(productId);
+        auction.setStatus(AuctionStatus.STARTED);
         return bidAuctionRepository.saveAuction(auction);
     }
 
