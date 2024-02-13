@@ -1,4 +1,4 @@
-package com.db.auction.domain;
+package com.db.auction.domain.service;
 
 import java.util.Optional;
 
