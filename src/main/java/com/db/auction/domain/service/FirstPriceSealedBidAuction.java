@@ -11,7 +11,16 @@ public class FirstPriceSealedBidAuction implements BidAuction<Auction>{
     public FirstPriceSealedBidAuction(BidAuctionRepository bidAuctionRepository) {
         this.bidAuctionRepository = bidAuctionRepository;
     }
+    @Override
     public Optional<Auction> getAuction(Long id) {
         return bidAuctionRepository.getAuction(id);
+    }
+
+    @Override
+    public Long createAuction(String productId, double minimumBid) {
+        Auction auction = new Auction();
+        auction.setMinimumBid(minimumBid);
+        auction.setProductId(productId);
+        return bidAuctionRepository.saveAuction(auction);
     }
 }
