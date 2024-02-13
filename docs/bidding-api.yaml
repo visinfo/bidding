@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: Blind Auction Platform APIs
+  description: APIs for managing blind auctions
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+paths:
+  /auctions:
+    post:
+      summary: Create a new auction
+      tags:
+        - Auctions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuctionCreationRequest'
+      responses:
+        '200':
+          description: Auction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuctionCreationResponse'
+        '400':
+          description: Bad request
+  /auctions/{auctionId}:
+    get:
+      summary: Get auction details
+      tags:
+        - Auctions
+      parameters:
+        - in: path
+          name: auctionId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Auction details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuctionCreationResponse'
+        '404':
+          description: Auction not found
+  /auctions/{auctionId}/bids:
+    post:
+      summary: Place a bid
+      tags:
+        - Auctions
+      parameters:
+        - in: path
+          name: auctionId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BidPlacementRequest'
+      responses:
+        '200':
+          description: Bid placed successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Auction not found
+  /auctions/{auctionId}/end:
+    put:
+      summary: End an auction
+      tags:
+        - Auctions
+      parameters:
+        - in: path
+          name: auctionId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Auction ended successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Auction not found
+
+  /auctions/{auction_id}/winner:
+    get:
+      summary: Get winner of an auction
+      tags:
+        - Auctions
+      parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Auction winner retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuctionWinnerResponse'
+        '404':
+          description: Auction not found
+
+components:
+  schemas:
+    AuctionCreationRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        minimumBid:
+          type: number
+        productId:
+            type: string
+      required:
+        - title
+        - minimumBid
+        - productId
+    AuctionCreationResponse:
+      type: object
+      properties:
+        auctionId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        minimumBid:
+          type: number
+        status:
+          type: string
+    AuctionWinnerResponse:
+      type: object
+      properties:
+        winner:
+          type: string
+        bid_amount:
+          type: number
+    BidPlacementRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+        bidderId:
+          type: string
+      required:
+        - amount
+        - bidderId
