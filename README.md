@@ -7,8 +7,7 @@ The project is divided into three modules:
 1. **auction**: This module contains the API for the bid auction system. It contains the domain model, repository, service and controller for the bid auction system.
     - Assumption: Focus on the core functionality of the bid auction system. Also, unit tests are not covering the entire code base.
 2. **product**: This module contains the API for the product service. It contains the domain model, repository, service and controller for the product service.
-3. **user**: This module contains the API for the user service. It contains the domain model, repository, service and controller for the user service.
-    - Assumption: User service is not implemented to reduce the scope. However, the user service can also be implemented to manage users in the system. User service will issue dynamic user Identifier for each user,to compile with PII regulations.
+3. **user**: Todo: User service is not implemented. However, it can be implemented to manage users in the system. User service will issue dynamic user Identifier for each user,to compile with PII regulations.
 
 ### How to run the application 
 1. Clone the repository
@@ -93,5 +92,19 @@ The project is divided into three modules:
    - **Get Winner**
    ```
      curl --location 'http://localhost:8080/auctions/1/winner' \
+     --header 'Content-Type: application/json' 
+   ```
+   - **Create Product**
+   ```
+     curl --location --request POST 'http://localhost:8080/products/' \
+     --header 'Content-Type: application/json' \
+     --data '{
+     "name": "Product 1",
+     "description": "Product 1 description"
+     }'
+   ```
+   - **Get Product**
+   ```
+     curl --location 'http://localhost:8080/products/1' \
      --header 'Content-Type: application/json' 
    ```
