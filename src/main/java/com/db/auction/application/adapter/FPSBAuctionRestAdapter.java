@@ -25,7 +25,7 @@ public class FPSBAuctionRestAdapter {
 
     @PostMapping("/")
     public ResponseEntity<String> createAuction(@RequestBody AuctionCreationRequest request) {
-        Long auctionId = bidAuction.createAuction(request.getProductId(), request.getMinimumBid());
+        Long auctionId = bidAuction.createAuction(request.getProductId(), request.getMinimumBid(), request.getTitle());
         return new ResponseEntity<>("Auction created with id: " + auctionId,
                 HttpStatus.OK);
     }
