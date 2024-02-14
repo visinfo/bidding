@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class FirstPriceSealedBidAuction implements BidAuction<Auction>{
+public class FirstPriceSealedBidAuction implements BidAuction<Auction, Winner>{
     private final BidAuctionRepository bidAuctionRepository;
 
     public FirstPriceSealedBidAuction(BidAuctionRepository bidAuctionRepository) {
