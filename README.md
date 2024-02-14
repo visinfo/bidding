@@ -50,7 +50,7 @@ The project is divided into three modules:
     http://localhost:8080/h2-console
     ```
    
-2. The database URL is `jdbc:h2:mem:testdb` and the username is `sa`. You can connect to the database using these credentials.
+2. The database URL is `jdbc:h2:mem:testdb` and the username is `sa` and password is `password`. You can connect to the database using these credentials.
 3. You can view the tables and data in the database using the H2 console.
 
 ### How test apis 
