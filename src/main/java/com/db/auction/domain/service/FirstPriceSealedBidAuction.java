@@ -6,6 +6,7 @@ import com.db.auction.domain.exception.InvalidBid;
 import com.db.auction.domain.model.Auction;
 import com.db.auction.domain.model.AuctionStatus;
 import com.db.auction.domain.model.Bid;
+import com.db.auction.domain.model.Winner;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -74,7 +75,7 @@ public class FirstPriceSealedBidAuction implements BidAuction<Auction>{
         return Optional.of(auction);
     }
 
-    public  Optional<String> getWinner(Long auctionId){
+    public  Optional<Winner> getWinner(Long auctionId){
         Optional<Auction> auction = getAuction(auctionId);
         if (auction.isEmpty()) {
             throw new InvalidAuction("Auction not found");
@@ -82,6 +83,12 @@ public class FirstPriceSealedBidAuction implements BidAuction<Auction>{
         if (auction.get().getStatus() != AuctionStatus.ENDED) {
             throw new InvalidAuction("Auction not ended");
         }
-        return Optional.of(auction.get().getWinnerId());
+        if(auction.get().getWinnerId() !=null){
+            Winner winner = new Winner(auction.get().getWinnerId(), auction.get().getMinimumBid());
+            return Optional.of(winner);
+
+        }else{
+            return Optional.empty();
+        }
     }
 }

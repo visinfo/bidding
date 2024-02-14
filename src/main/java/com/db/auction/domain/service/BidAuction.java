@@ -1,5 +1,7 @@
 package com.db.auction.domain.service;
 
+import com.db.auction.domain.model.Winner;
+
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -11,5 +13,5 @@ public interface BidAuction<A> {
 
     Optional<A> endAuction(Long auctionId);
 
-    Optional<String> getWinner(Long auctionId);
+    Optional<Winner> getWinner(Long auctionId);
 }

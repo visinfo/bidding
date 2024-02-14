@@ -33,3 +33,65 @@ The project is divided into three modules:
     - **User Service**
         Todo: User service is not implemented. However, it can be implemented to manage users in the system. User service will issue dynamic user Identifier for each user,to compile with PII regulations.
     Please see the [API documentation](docs/bidding-api.yaml) for more details on how to use the application.
+
+### How to run the tests
+1. Run the following command to run the tests
+    ```
+    ./gradlew test
+    ```
+2. The tests will run and the results will be displayed in the console.
+3. You can also view the test report by opening the following file in a browser:
+    ```
+    build/reports/tests/test/index.html
+    ```
+   
+### How to view the database
+1. The application uses an in-memory H2 database. You can view the database by opening the following URL in a browser:
+    ```
+    http://localhost:8080/h2-console
+    ```
+   
+2. The database URL is `jdbc:h2:mem:testdb` and the username is `sa`. You can connect to the database using these credentials.
+3. You can view the tables and data in the database using the H2 console.
+
+### How test apis 
+   You can run below curl commands to test the apis
+   - **Create Auction**
+   ```
+      curl --location 'http://localhost:8080/auctions/' \
+--header 'Content-Type: application/json' \
+--data '{
+
+"productId":"1",
+"minimumBid": 100.0,
+"title":"Auction 1"
+
+}'
+   ```
+   - **Get Auction**
+   ```
+      curl --location 'http://localhost:8080/auctions/1' \
+      --header 'Content-Type: application/json' 
+         
+   ```
+    
+   - **Place Bid**
+   ```
+     curl --location --request PATCH 'http://localhost:8080/auctions/placeBid/1' \
+     --header 'Content-Type: application/json' \
+     --header 'Cookie: JSESSIONID=91D62AAD979A192BC1DA8C26A34477AC' \
+     --data '{
+     "bidderId": 1212123,
+     "bidAmount": 101
+     }'
+   ```
+   - **End Auction**
+   ```
+     curl --location --request PUT 'http://localhost:8080/auctions/1/endAuction' \
+     --header 'Content-Type: application/json' 
+   ```
+   - **Get Winner**
+   ```
+     curl --location 'http://localhost:8080/auctions/1/winner' \
+     --header 'Content-Type: application/json' 
+   ```
