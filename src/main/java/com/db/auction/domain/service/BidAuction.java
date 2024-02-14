@@ -5,7 +5,7 @@ import com.db.auction.domain.model.Winner;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-public interface BidAuction<A> {
+public interface BidAuction<A,W> {
 
     Optional<A> getAuction(Long id);
     Long createAuction(String productId, BigDecimal minimumBid, String title);
@@ -13,5 +13,5 @@ public interface BidAuction<A> {
 
     Optional<A> endAuction(Long auctionId);
 
-    Optional<Winner> getWinner(Long auctionId);
+    Optional<W> getWinner(Long auctionId);
 }
