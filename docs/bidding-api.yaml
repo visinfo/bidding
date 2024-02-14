@@ -134,19 +134,10 @@ components:
           type: string
         title:
           type: string
-        description:
-          type: string
         minimumBid:
           type: number
         status:
           type: string
-    AuctionWinnerResponse:
-      type: object
-      properties:
-        winner:
-          type: string
-        bid_amount:
-          type: number
     BidPlacementRequest:
       type: object
       properties:
@@ -157,3 +148,10 @@ components:
       required:
         - amount
         - bidderId
+    Winner:
+        type: object
+        properties:
+          winner:
+            type: string
+          bidAmount:
+            type: number
