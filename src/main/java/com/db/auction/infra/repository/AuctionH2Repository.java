@@ -16,8 +16,35 @@ public class AuctionH2Repository implements BidAuctionRepository {
 
     @Override
     public Long saveAuction(Auction auction) {
-        AuctionEntity auctionEntity = new AuctionEntity(auction);
-        return auctionJPARepository.save(auctionEntity).getId();
+        AuctionEntity auctionEntity=new AuctionEntity(auction);
+        return auctionJPARepository.saveAndFlush(auctionEntity).getId();
+    }
+    public  Long saveBid(Auction auction){
+        Optional<AuctionEntity> auctionEntity = auctionJPARepository.findById(auction.getId());
+        if(auctionEntity.isPresent()){
+            AuctionEntity updatedAuctionEntity = auctionEntity.get();
+            if (auction.getBids() != null && !auction.getBids().isEmpty()) {
+                updatedAuctionEntity.setBids(updatedAuctionEntity.convertToBidEntities(auction.getBids()));
+            }
+            return auctionJPARepository.saveAndFlush(updatedAuctionEntity).getId();
+
+        }else{
+            throw  new RuntimeException("Auction not found");
+        }
+
+    }
+    public  Long endAuction(Auction auction){
+        Optional<AuctionEntity> auctionEntity = auctionJPARepository.findById(auction.getId());
+        if(auctionEntity.isPresent()){
+            AuctionEntity updatedAuctionEntity = auctionEntity.get();
+            updatedAuctionEntity.setStatus(auction.getStatus().name());
+            updatedAuctionEntity.setWinnerId(auction.getWinnerId());
+            return auctionJPARepository.saveAndFlush(updatedAuctionEntity).getId();
+
+        }else{
+            throw  new RuntimeException("Auction not found");
+        }
+
     }
 
     @Override

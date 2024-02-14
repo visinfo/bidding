@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "auction")
-@SequenceGenerator(name = "events_id_generator", sequenceName = "events_id_seq", allocationSize = 1)
+@SequenceGenerator(name = "auction_id_generator", sequenceName = "auction_id_seq", allocationSize = 1)
 @Data
 @NoArgsConstructor
 public class AuctionEntity {
@@ -22,7 +22,7 @@ public class AuctionEntity {
     @jakarta.persistence.Id
     @Column(name = "id",nullable = false)
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="events_id_generator")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="auction_id_generator")
     private Long id;
 
     @Column(name = "product_Id", nullable = false)
@@ -40,14 +40,28 @@ public class AuctionEntity {
     @Column(name = "status", nullable = false)
     private String status;
 
+
+    @Column(name = "title", nullable = false)
+    private String title;
     public AuctionEntity(Auction auction){
         this.productId = auction.getProductId();
         this.minimumBid = auction.getMinimumBid();
         this.status = auction.getStatus().name();
+        this.title = auction.getTitle();
         if (auction.getBids() != null && !auction.getBids().isEmpty()) {
             this.bids = convertToBidEntities(auction.getBids());
         }
 
+    }
+    public AuctionEntity convertToAuctionEntity(Auction auction) {
+        this.productId = auction.getProductId();
+        this.minimumBid = auction.getMinimumBid();
+        this.status = auction.getStatus().name();
+        this.title = auction.getTitle();
+        if (auction.getBids() != null && !auction.getBids().isEmpty()) {
+            this.bids = convertToBidEntities(auction.getBids());
+        }
+        return this;
     }
 
     public List<BidEntity> convertToBidEntities(List<Bid> bids) {
@@ -62,6 +76,7 @@ public class AuctionEntity {
         auction.setWinnerId(this.winnerId);
         auction.setId(this.id);
         auction.setStatus(AuctionStatus.valueOf(this.status));
+        auction.setTitle(this.title);
         if (this.bids != null && !this.bids.isEmpty()) {
             auction.setBids(convertToBids());
         }
